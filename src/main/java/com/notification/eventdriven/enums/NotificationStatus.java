@@ -1,7 +1,8 @@
 package com.notification.eventdriven.enums;
 
 public enum NotificationStatus {
-    STARTED,
+    PENDING,
+    PROCESSING,
     SENT,
-    RECEIVED
+    FAILED
 }

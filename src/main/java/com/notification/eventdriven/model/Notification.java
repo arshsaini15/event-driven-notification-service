@@ -1,29 +1,34 @@
 package com.notification.eventdriven.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.notification.eventdriven.enums.NotificationStatus;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private Long id;
 
-    String message;
+    @Column(nullable = false, unique = true)
+    private String eventId;
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NotificationStatus status;
 
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    @Column(nullable = false)
+    private int retryCount;
+
+    @Column(nullable = false)
+    private String message;
+
+    private Instant createdAt;
+    private Instant updatedAt;
 }
