@@ -51,13 +51,11 @@ public class Notification {
         this.status = status;
     }
 
-    public void markSent() {
+    public void mark_Sent() {
         this.status = NotificationStatus.SENT;
     }
 
-    public void markFailed() {
-        this.status = NotificationStatus.FAILED;
-    }
+    public void mark_Failed() {this.status = NotificationStatus.FAILED;}
 
     public void incrementRetry() {
         this.retryCount++;
