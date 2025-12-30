@@ -5,10 +5,8 @@ import com.notification.eventdriven.dto.response.NotificationResponse;
 import com.notification.eventdriven.enums.NotificationStatus;
 import com.notification.eventdriven.exceptions.NotificationNotFoundException;
 import com.notification.eventdriven.mapper.NotificationMapper;
-import com.notification.eventdriven.model.Notification;
 import com.notification.eventdriven.service.NotificationService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +17,16 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
     @GetMapping("/event/{eventId}")
-    public Notification getByEventId(@PathVariable Long eventId) {
-        return notificationService.getByEventId(eventId)
-                .orElseThrow(() ->
-                        new NotificationNotFoundException(
-                                "Notification with eventId " + eventId + " not found"
-                        )
-                );
+    public NotificationResponse getByEventId(@PathVariable Long eventId) {
+        return NotificationMapper.toDto(
+                notificationService.getByEventId(eventId)
+        );
     }
 
     @PutMapping("/{notificationId}/status")
@@ -43,12 +39,13 @@ public class NotificationController {
         );
     }
 
-
     @GetMapping
-    public Page<Notification> getNotifications(
+    public Page<NotificationResponse> getNotifications(
             @RequestParam(required = false) NotificationStatus status,
             Pageable pageable
     ) {
-        return notificationService.getNotifications(status, pageable);
+        return notificationService.getNotifications(status, pageable)
+                .map(NotificationMapper::toDto);
     }
+
 }
