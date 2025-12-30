@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
-@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -25,20 +23,35 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public Notification createIfNotExists(Long eventId, String message) {
+    public Notification createIfNotExists(String eventId, String message) {
 
-        Optional<Notification> existing = notificationRepository.findByEventId(eventId);
-        if (existing.isPresent()) {
-            return existing.get();
+        if (notificationRepository.existsByEventId(eventId)) {
+            return notificationRepository.findByEventId(eventId)
+                    .orElseThrow(() ->
+                            new IllegalStateException(
+                                    "eventId exists but notification not found: " + eventId
+                            )
+                    );
         }
 
-        Notification notification = new Notification(eventId, message);
-        return notificationRepository.save(notification);
+        try {
+            Notification notification = new Notification(eventId, message);
+            return notificationRepository.save(notification);
+        } catch (DataIntegrityViolationException ex) {
+            // another concurrent consumer inserted the same eventId
+            return notificationRepository.findByEventId(eventId)
+                    .orElseThrow(() ->
+                            new IllegalStateException(
+                                    "Duplicate eventId but notification not found: " + eventId
+                            )
+                    );
+        }
     }
 
 
+
     @Override
-    public Notification getByEventId(Long eventId) {
+    public Notification getByEventId(String eventId) {
         return notificationRepository.findByEventId(eventId)
                 .orElseThrow(() ->
                         new NotificationNotFoundException(
@@ -48,6 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public Notification updateStatus(Long notificationId, NotificationStatus status) {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() ->

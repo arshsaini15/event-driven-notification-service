@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface NotificationService {
 
-    Notification createIfNotExists(Long eventId, String message);
+    Notification createIfNotExists(String eventId, String message);
 
-    Notification getByEventId(Long eventId);
+    Notification getByEventId(String eventId);
 
     Notification updateStatus(Long notificationId, NotificationStatus status);
 
