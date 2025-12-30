@@ -18,13 +18,19 @@ public class NotificationEventConsumer {
 
     @KafkaListener(
             topics = "notification-events",
-            groupId = "notification-consumer"
+            groupId = "notification-service"
     )
+
     public void consume(NotificationEvent event) {
 
+        log.info("Received notification event {}", event.getEventId());
+
+
         if (event.getEventId() == null) {
-            throw new IllegalArgumentException("eventId cannot be null");
+            log.error("Received event without eventId: {}", event);
+            return;
         }
+
 
         notificationService.createIfNotExists(
                 event.getEventId(),
