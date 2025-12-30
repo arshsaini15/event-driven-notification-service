@@ -3,7 +3,6 @@ package com.notification.eventdriven.controller;
 import com.notification.eventdriven.dto.request.UpdateStatusRequest;
 import com.notification.eventdriven.dto.response.NotificationResponse;
 import com.notification.eventdriven.enums.NotificationStatus;
-import com.notification.eventdriven.exceptions.NotificationNotFoundException;
 import com.notification.eventdriven.mapper.NotificationMapper;
 import com.notification.eventdriven.service.NotificationService;
 import jakarta.validation.Valid;
@@ -48,4 +47,13 @@ public class NotificationController {
                 .map(NotificationMapper::toDto);
     }
 
+    @PostMapping("/_test/create")
+    public NotificationResponse testCreate(
+            @RequestParam Long eventId,
+            @RequestParam String message
+    ) {
+        return NotificationMapper.toDto(
+                notificationService.createIfNotExists(eventId, message)
+        );
+    }
 }

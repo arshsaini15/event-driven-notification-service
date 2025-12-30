@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class NotificationServiceImpl implements NotificationService {
@@ -22,20 +24,18 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public Notification createIfNotExists(Long eventId, String message) {
-        try {
-            return notificationRepository.save(
-                    new Notification(eventId, message)
-            );
-        } catch (DataIntegrityViolationException ex) {
-            return notificationRepository.findByEventId(eventId)
-                    .orElseThrow(() ->
-                            new IllegalStateException(
-                                    "Duplicate eventId but notification not found: " + eventId
-                            )
-                    );
+
+        Optional<Notification> existing = notificationRepository.findByEventId(eventId);
+        if (existing.isPresent()) {
+            return existing.get();
         }
+
+        Notification notification = new Notification(eventId, message);
+        return notificationRepository.save(notification);
     }
+
 
     @Override
     public Notification getByEventId(Long eventId) {
