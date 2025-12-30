@@ -25,12 +25,10 @@ public class NotificationEventConsumer {
 
         log.info("Received notification event {}", event.getEventId());
 
-
         if (event.getEventId() == null) {
             log.error("Received event without eventId: {}", event);
             return;
         }
-
 
         notificationService.createIfNotExists(
                 event.getEventId(),
