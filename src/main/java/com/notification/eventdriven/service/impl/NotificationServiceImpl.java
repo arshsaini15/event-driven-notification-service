@@ -11,38 +11,43 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
-    private static NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
     public NotificationServiceImpl(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }
 
     @Override
-    @Transactional
     public Notification createIfNotExists(Long eventId, String message) {
         try {
             return notificationRepository.save(
                     new Notification(eventId, message)
             );
         } catch (DataIntegrityViolationException ex) {
-            // Another thread / instance already inserted it
             return notificationRepository.findByEventId(eventId)
-                    .orElseThrow();
+                    .orElseThrow(() ->
+                            new IllegalStateException(
+                                    "Duplicate eventId but notification not found: " + eventId
+                            )
+                    );
         }
     }
 
     @Override
-    public Optional<Notification> getByEventId(Long eventId) {
-        return notificationRepository.findByEventId(eventId);
+    public Notification getByEventId(Long eventId) {
+        return notificationRepository.findByEventId(eventId)
+                .orElseThrow(() ->
+                        new NotificationNotFoundException(
+                                "Notification with eventId " + eventId + " not found"
+                        )
+                );
     }
 
     @Override
-    @Transactional
     public Notification updateStatus(Long notificationId, NotificationStatus status) {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() ->
@@ -56,11 +61,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Page<Notification> getNotifications(NotificationStatus status, Pageable pageable) {
-
-        if (status == null) {
-            return notificationRepository.findAll(pageable);
-        }
-
-        return notificationRepository.findByStatus(status, pageable);
+        return (status == null)
+                ? notificationRepository.findAll(pageable)
+                : notificationRepository.findByStatus(status, pageable);
     }
 }
