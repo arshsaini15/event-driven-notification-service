@@ -22,7 +22,7 @@ public class Notification {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long eventId;
+    private String eventId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public class Notification {
     @Column(nullable = false)
     private Instant updatedAt;
 
-    public Notification(Long eventId, String message) {
+    public Notification(String eventId, String message) {
         this.eventId = eventId;
         this.message = message;
         this.status = NotificationStatus.PENDING;

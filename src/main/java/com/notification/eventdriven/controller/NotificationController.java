@@ -22,7 +22,7 @@ public class NotificationController {
     }
 
     @GetMapping("/event/{eventId}")
-    public NotificationResponse getByEventId(@PathVariable Long eventId) {
+    public NotificationResponse getByEventId(@PathVariable String eventId) {
         return NotificationMapper.toDto(
                 notificationService.getByEventId(eventId)
         );
@@ -49,7 +49,7 @@ public class NotificationController {
 
     @PostMapping("/_test/create")
     public NotificationResponse testCreate(
-            @RequestParam Long eventId,
+            @RequestParam String eventId,
             @RequestParam String message
     ) {
         return NotificationMapper.toDto(
