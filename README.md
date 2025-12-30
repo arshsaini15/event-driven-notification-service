@@ -102,25 +102,26 @@ Kafka
 **📂 Project Structure**
 
 com.notification.eventdriven
-├── events
-│   ├── NotificationEvent.java
-│   └── consumer
-│       └── NotificationEventConsumer.java
-│
-├── service
-│   ├── NotificationService.java
-│   └── impl
-│       └── NotificationServiceImpl.java
-│
-├── sender
-│   ├── NotificationSender.java
-│   └── LogNotificationSender.java
-│
-├── scheduler
-│   └── NotificationRetryJob.java
-│
-├── repository
-│   └── NotificationRepository.java
-│
-└── model
-    └── Notification.java
+  events
+    NotificationEvent.java
+   
+  consumer
+    NotificationEventConsumer.java
+
+  service
+    NotificationService.java
+    impl
+      NotificationServiceImpl.java
+
+   sender
+    NotificationSender.java
+    LogNotificationSender.java
+
+  scheduler
+    NotificationRetryJob.java
+
+  repository
+    NotificationRepository.java
+
+  model
+     Notification.java
