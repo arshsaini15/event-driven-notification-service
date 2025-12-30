@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    Optional<Notification> findByEventId(Long eventId);
+    boolean existsByEventId(String eventId);
+
+    Optional<Notification> findByEventId(String eventId);
 
     Page<Notification> findByStatus(NotificationStatus status, Pageable pageable);
 }
