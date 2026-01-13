@@ -20,7 +20,7 @@ This project demonstrates a real-world pattern to handle those problems correctl
 
 **🔑 Core Design Decisions**
 
-_1. Idempotency (Non-negotiable)_
+_1. Idempotency
 
 Every event carries a globally unique eventId
 
