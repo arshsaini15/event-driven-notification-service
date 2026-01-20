@@ -8,6 +8,7 @@ import com.notification.eventdriven.events.retry.RetryPolicy;
 import com.notification.eventdriven.exceptions.PermanentNotificationException;
 import com.notification.eventdriven.exceptions.TransientNotificationException;
 
+import com.notification.eventdriven.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.kafka.annotation.KafkaListener;
