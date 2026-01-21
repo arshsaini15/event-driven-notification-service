@@ -1,115 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.notification.eventdriven</groupId>
-	<artifactId>notification-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>notification-service</name>
-	<description>Event-driven notification service built using Spring Boot and Kafka with idempotent processing and retry mechanisms.</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
-		</dependency>
+<notification:project
+        xmlns:notification="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-kafka-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-    </dependencies>
+    <notification:modelVersion>4.0.0</notification:modelVersion>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <notification:parent>
+        <notification:groupId>org.springframework.boot</notification:groupId>
+        <notification:artifactId>spring-boot-starter-parent</notification:artifactId>
+        <notification:version>4.0.1</notification:version>
+        <notification:relativePath/>
+    </notification:parent>
 
-</project>
+    <notification:groupId>com.notification.eventdriven</notification:groupId>
+    <notification:artifactId>notification-service</notification:artifactId>
+    <notification:version>0.0.1-SNAPSHOT</notification:version>
+    <notification:name>notification-service</notification:name>
+    <notification:description>
+        Event-driven notification service using Kafka, retries, DLQ, and replayer
+    </notification:description>
+
+    <notification:properties>
+        <notification:java.version>17</notification:java.version>
+    </notification:properties>
+
+    <notification:dependencies>
+
+        <!-- Web / REST -->
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-web</notification:artifactId>
+        </notification:dependency>
+
+        <!-- Kafka -->
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-kafka</notification:artifactId>
+        </notification:dependency>
+
+        <!-- REQUIRED for Kafka JsonDeserializer (Boot 4 does NOT guarantee this) -->
+        <notification:dependency>
+            <notification:groupId>com.fasterxml.jackson.core</notification:groupId>
+            <notification:artifactId>jackson-databind</notification:artifactId>
+        </notification:dependency>
+
+        <!-- JPA / Hibernate -->
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-data-jpa</notification:artifactId>
+        </notification:dependency>
+
+        <!-- PostgreSQL -->
+        <notification:dependency>
+            <notification:groupId>org.postgresql</notification:groupId>
+            <notification:artifactId>postgresql</notification:artifactId>
+            <notification:scope>runtime</notification:scope>
+        </notification:dependency>
+
+        <!-- Validation -->
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-validation</notification:artifactId>
+        </notification:dependency>
+
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-actuator</notification:artifactId>
+        </notification:dependency>
+
+        <notification:dependency>
+            <notification:groupId>org.projectlombok</notification:groupId>
+            <notification:artifactId>lombok</notification:artifactId>
+            <notification:optional>true</notification:optional>
+        </notification:dependency>
+
+
+        <notification:dependency>
+            <notification:groupId>org.springframework.boot</notification:groupId>
+            <notification:artifactId>spring-boot-starter-test</notification:artifactId>
+            <notification:scope>test</notification:scope>
+        </notification:dependency>
+
+        <notification:dependency>
+            <notification:groupId>org.springframework.kafka</notification:groupId>
+            <notification:artifactId>spring-kafka-test</notification:artifactId>
+            <notification:scope>test</notification:scope>
+        </notification:dependency>
+
+    </notification:dependencies>
+
+    <notification:build>
+        <notification:plugins>
+
+            <!-- Java 17 + Lombok -->
+            <notification:plugin>
+                <notification:groupId>org.apache.maven.plugins</notification:groupId>
+                <notification:artifactId>maven-compiler-plugin</notification:artifactId>
+                <notification:configuration>
+                    <notification:annotationProcessorPaths>
+                        <notification:path>
+                            <notification:groupId>org.projectlombok</notification:groupId>
+                            <notification:artifactId>lombok</notification:artifactId>
+                        </notification:path>
+                    </notification:annotationProcessorPaths>
+                </notification:configuration>
+            </notification:plugin>
+
+            <!-- Spring Boot -->
+            <notification:plugin>
+                <notification:groupId>org.springframework.boot</notification:groupId>
+                <notification:artifactId>spring-boot-maven-plugin</notification:artifactId>
+                <notification:configuration>
+                    <notification:excludes>
+                        <notification:exclude>
+                            <notification:groupId>org.projectlombok</notification:groupId>
+                            <notification:artifactId>lombok</notification:artifactId>
+                        </notification:exclude>
+                    </notification:excludes>
+                </notification:configuration>
+            </notification:plugin>
+
+        </notification:plugins>
+    </notification:build>
+
+</notification:project>

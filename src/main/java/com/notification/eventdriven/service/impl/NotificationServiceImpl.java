@@ -29,20 +29,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Notification createIfNotExists(String eventId, String message) {
 
-        try {
-            Notification notification = new Notification(eventId, message);
-            return notificationRepository.save(notification);
-
-        } catch (DataIntegrityViolationException ex) {
-            // another consumer already created it
-            return notificationRepository.findByEventId(eventId)
-                    .orElseThrow(() ->
-                            new IllegalStateException(
-                                    "Duplicate eventId but notification not found: " + eventId
-                            )
-                    );
-        }
+        return notificationRepository.findByEventId(eventId)
+                .orElseGet(() -> {
+                    Notification notification = new Notification(eventId, message);
+                    return notificationRepository.save(notification);
+                });
     }
+
 
     @Override
     public Notification getByEventId(String eventId) {
