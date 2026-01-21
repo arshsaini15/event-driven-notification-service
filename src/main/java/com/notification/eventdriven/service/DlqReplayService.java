@@ -1,5 +1,6 @@
 package com.notification.eventdriven.service;
 
+import com.notification.eventdriven.enums.NotificationEventType;
 import com.notification.eventdriven.events.NotificationEvent;
 import com.notification.eventdriven.events.producer.DlqReplayProducer;
 import com.notification.eventdriven.model.Notification;
@@ -44,8 +45,10 @@ public class DlqReplayService {
 
         NotificationEvent event = new NotificationEvent(
                 eventId,
+                NotificationEventType.REPLAY,
                 notification.getMessage()
         );
+
 
         replayProducer.replay(event);
     }
