@@ -11,7 +11,7 @@ import java.time.Instant;
 public class NotificationResponse {
 
     private Long id;
-    private Long eventId;
+    private String eventId;
     private NotificationStatus status;
     private int retryCount;
     private String message;
@@ -20,7 +20,7 @@ public class NotificationResponse {
 
     public NotificationResponse(
             Long id,
-            Long eventId,
+            String eventId,
             NotificationStatus status,
             int retryCount,
             String message,
