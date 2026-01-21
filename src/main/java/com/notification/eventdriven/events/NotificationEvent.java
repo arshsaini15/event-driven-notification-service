@@ -6,21 +6,47 @@ import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 public class NotificationEvent {
+
     @NotNull
     private String eventId;
 
-    private NotificationEvent eventType;
+    @NotNull
+    private NotificationEventType eventType;
+
+    @NotNull
     private String message;
 
-    private Instant occuredAt;
+    @NotNull
+    private Instant occurredAt;
+
+    // REQUIRED for Kafka deserialization
+    public NotificationEvent() {
+    }
+
+    public NotificationEvent(
+            String eventId,
+            NotificationEventType eventType,
+            String message
+    ) {
+        this.eventId = eventId;
+        this.eventType = eventType;
+        this.message = message;
+        this.occurredAt = Instant.now();
+    }
 
     public String getEventId() {
         return eventId;
     }
 
-    public NotificationEventType getEventType() {return eventType.getEventType();}
+    public NotificationEventType getEventType() {
+        return eventType;
+    }
 
-    public String getMessage() {return message;}
+    public String getMessage() {
+        return message;
+    }
 
-
+    public Instant getOccurredAt() {
+        return occurredAt;
+    }
 }
