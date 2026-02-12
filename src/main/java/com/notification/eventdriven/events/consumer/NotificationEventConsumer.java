@@ -52,7 +52,21 @@ public class NotificationEventConsumer {
         int currentRetry = (retryCount == null) ? 0 : retryCount;
 
         try {
+
+
             validate(event);
+
+
+
+
+            if ("999".equals(event.getEventId())) {
+                throw new TransientNotificationException("Forced transient failure");
+            }
+
+
+
+
+
 
             notificationService.createIfNotExists(
                     event.getEventId(),

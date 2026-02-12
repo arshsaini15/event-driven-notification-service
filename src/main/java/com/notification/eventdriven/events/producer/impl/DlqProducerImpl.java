@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.kafka.support.KafkaHeaders;
 
 @Slf4j
 @Component
@@ -31,6 +32,7 @@ public class DlqProducerImpl implements DlqProducer {
         kafkaTemplate.send(
                 MessageBuilder
                         .withPayload(event)
+                        .setHeader(KafkaHeaders.TOPIC, DLQ_TOPIC) // ⭐ THIS LINE
                         .setHeader(RetryHeaders.ERROR_REASON, cause.getMessage())
                         .build()
         );

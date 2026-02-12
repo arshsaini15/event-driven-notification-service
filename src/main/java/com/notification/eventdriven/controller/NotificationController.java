@@ -16,7 +16,6 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-
     @GetMapping("/event/{eventId}")
     public NotificationResponse getByEventId(@PathVariable String eventId) {
         return NotificationMapper.toDto(
